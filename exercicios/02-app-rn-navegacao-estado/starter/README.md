@@ -104,7 +104,7 @@ CI roda automático em todo push pro `main` do seu fork. Mínimo: **6 testes ver
 
 ## Tasks guiadas
 
-9 tasks sequenciais. Lista completa em [`PASSOS.md`](./PASSOS.md).
+9 tasks sequenciais + 1 bônus opcional. Lista completa em [`PASSOS.md`](./PASSOS.md).
 
 ```bash
 grep -rn "TODO \[TASK" src/ __tests__/
@@ -121,6 +121,7 @@ grep -rn "TODO \[TASK" src/ __tests__/
 | TASK 7 | — | MMKV persist |
 | TASK 8 | — | HeartButton Reanimated |
 | TASK 9 | — | Testes favorites (IA) |
+| TASK 10 🎁 | — | Paginação infinita (bônus, não vale ponto) |
 
 Entrega: push pro fork → PR → CI valida automático. Sem README/screencast obrigatório.
 

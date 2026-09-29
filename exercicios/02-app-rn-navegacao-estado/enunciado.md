@@ -128,6 +128,7 @@ Push pro seu fork → abre PR. CI valida automático (autograder lê o código, 
 > - **Bottom Tabs** com aba `Favoritos` mostrando lista persistida = +2pt
 > - Hermes habilitado (verificar em `app.json`)
 > - TanStack Query com `staleTime` configurado + `prefetchQuery` antes do detail = +1pt
+> - **Paginação infinita** na lista de filmes (`onEndReached` + `useInfiniteQuery`, ou incrementar `page` manualmente) — TMDB já devolve `page`/`total_pages` na resposta
 
 ---
 

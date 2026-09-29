@@ -68,6 +68,12 @@ grep -rn "TODO \[TASK" src/ __tests__/ | sed 's/.*TASK /TASK /' | cut -d']' -f1 
 - 3+ testes verdes pra `toggle`, `isFavorite`, `clear`
 - Total CI: **≥ 6 testes verdes** (3 counter TASK 4 + 3 favorites TASK 9)
 
+### 🎁 TASK 10 (bônus, não vale ponto) — Paginação infinita
+📁 `src/queries/movies/get-popular-movies.ts` + `src/screens/MovieList.tsx`
+- TMDB já devolve `page`/`total_pages` na resposta — `usePopularMovies` já aceita `page` como argumento
+- Troque por `useInfiniteQuery` (ou incremente `page` manualmente) + `onEndReached` no `FlatList` pra carregar mais filmes ao chegar no fim da lista
+- Não obrigatório, não afeta a nota mínima — conta em arredondamento (ver "Bonus" no `enunciado.md`)
+
 ### 📦 Entrega
 Push pro fork → abre PR → CI valida automático (sem README/screencast obrigatório — o autograder já lê o código).
 
