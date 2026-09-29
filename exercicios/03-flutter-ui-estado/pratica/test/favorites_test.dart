@@ -1,4 +1,4 @@
-// Ex3 · TASK 6 — VOCÊ escreve este teste 🧑‍💻 EM CASA
+// Ex3 · TASK 9 — VOCÊ escreve este teste 🧑‍💻 EM CASA
 // (faça DEPOIS do TASK 2 — o provider precisa existir).
 //
 // Teste o `favoritesProvider` ISOLADO (sem UI) com ProviderContainer:
