@@ -40,7 +40,7 @@ grep -rn "TODO \[TASK" src/ __tests__/ | sed 's/.*TASK /TASK /' | cut -d']' -f1 
 
 ---
 
-## 📦 Atividade 2 — assíncrona (entrega 10/06, 15 pts, ~2h-2h30) — TASKs 5 a 10
+## 📦 Atividade 2 — assíncrona (ver Canvas, 15 pts, ~2h) — TASKs 5 a 9
 
 ### 📝 TASK 5 — Zustand favorites store
 📁 `src/store/favoritesStore.ts`
@@ -68,9 +68,8 @@ grep -rn "TODO \[TASK" src/ __tests__/ | sed 's/.*TASK /TASK /' | cut -d']' -f1 
 - 3+ testes verdes pra `toggle`, `isFavorite`, `clear`
 - Total CI: **≥ 6 testes verdes** (3 counter TASK 4 + 3 favorites TASK 9)
 
-### 📝 TASK 10 — README + screencast + entrega
-- `README.md` com nome, opção Reanimated (A/B/C), screenshot, screencast.gif
-- Push pro fork → CI verde → cole link no Canvas
+### 📦 Entrega
+Push pro fork → abre PR → CI valida automático (sem README/screencast obrigatório — o autograder já lê o código).
 
 ---
 

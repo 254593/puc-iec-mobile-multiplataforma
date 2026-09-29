@@ -112,18 +112,13 @@ jobs:
             }
             const g = JSON.parse(fs.readFileSync('/tmp/grade.json', 'utf8'));
             const fmt = (n) => String(n).replace('.', ',');
-            const manual = g.manualTotal ?? 0;
             const body = head +
-              `### ⚠️ Nota MÍNIMA automática: **${fmt(g.score)} / ${g.total}**\n` +
-              `É um **piso**: a nota final (lançada por mim no **Canvas**) parte daqui e **só sobe** com a revisão manual.\n\n` +
+              `### Nota: **${fmt(g.score)} / ${g.total}**\n` +
+              `Nota final é lançada por mim no **Canvas**, podendo ajustar por arguição.\n\n` +
               `${g.publicBreakdown}\n\n` +
-              (manual > 0
-                ? `📝 Os itens _avaliação manual_ valem **+${manual} pts** e são conferidos no Canvas (README/screenshot/screencast, referência).\n\n`
-                : ``) +
               (g.pass
-                ? `✅ Critérios automáticos mínimos atendidos.\n\n`
-                : `⚠️ Abaixo do mínimo automático — revise os ❌ acima e faça um novo commit (eu re-avalio).\n\n`) +
-              `🎥 Anexe um **screencast (≤ 2min)** do app rodando na descrição do PR.\n` +
+                ? `✅ Critérios mínimos atendidos.\n\n`
+                : `⚠️ Abaixo do mínimo — revise os ❌ acima e faça um novo commit (eu re-avalio).\n\n`) +
               `_Dúvidas? **Teams da turma** ou jackson.96@gmail.com._`;
             await github.rest.issues.createComment({
               ...context.repo, issue_number: context.issue.number, body,

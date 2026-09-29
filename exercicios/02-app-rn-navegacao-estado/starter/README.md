@@ -2,7 +2,7 @@
 
 App Expo + TypeScript com arquitetura profissional separando **services**, **queries**, **contexts**, **screens**, **components**.
 
-> Você vai usar esse starter no **hands-on da Aula 2** (em sala) e na **Atividade 2** (entrega 10/06, 15pts).
+> Você vai usar esse starter no **hands-on da Aula 2** (em sala) e na **Atividade 2** (entrega ver Canvas, 15pts).
 
 ---
 
@@ -104,7 +104,7 @@ CI roda automático em todo push pro `main` do seu fork. Mínimo: **6 testes ver
 
 ## Tasks guiadas
 
-10 tasks sequenciais. Lista completa em [`PASSOS.md`](./PASSOS.md).
+9 tasks sequenciais. Lista completa em [`PASSOS.md`](./PASSOS.md).
 
 ```bash
 grep -rn "TODO \[TASK" src/ __tests__/
@@ -121,7 +121,8 @@ grep -rn "TODO \[TASK" src/ __tests__/
 | TASK 7 | — | MMKV persist |
 | TASK 8 | — | HeartButton Reanimated |
 | TASK 9 | — | Testes favorites (IA) |
-| TASK 10 | — | README + screencast + entrega |
+
+Entrega: push pro fork → PR → CI valida automático. Sem README/screencast obrigatório.
 
 ---
 

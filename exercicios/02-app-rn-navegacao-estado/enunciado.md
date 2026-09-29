@@ -3,7 +3,7 @@
 **Disciplina:** Arquitetura de Aplicações Móveis e Multiplataforma
 **Entrega:** ver Canvas
 **Modalidade:** individual
-**Tempo estimado:** **~2h-2h30** (estende app construído no hands-on da Aula 2)
+**Tempo estimado:** **~2h** (estende app construído no hands-on da Aula 2)
 **Dificuldade:** ⭐⭐⭐ Difícil — implementação RN com MMKV + Reanimated + Zustand; requer simulador iOS ou Android
 
 ---
@@ -26,7 +26,7 @@ Starter `aula-02` rodando localmente:
 
 ```bash
 git clone https://github.com/SEU-USER/puc-iec-mobile-multiplataforma.git
-cd puc-iec-mobile-multiplataforma/starters/aula-02
+cd puc-iec-mobile-multiplataforma/exercicios/02-app-rn-navegacao-estado/starter
 npm install
 cp .env.example .env  # editar com TMDB token
 npx expo start
@@ -38,7 +38,7 @@ Arquitetura: `services/` (HTTP) + `queries/` (TanStack) + `store/` (Zustand) + `
 
 ---
 
-## Tarefa (5 passos em ~2h-2h30)
+## Tarefa (5 passos em ~2h)
 
 ### 1. Zustand `useFavoritesStore` (~30min)
 📁 `src/store/favoritesStore.ts`
@@ -104,14 +104,9 @@ Mantenha estilo dos testes existentes."
 
 CI workflow já vem em `.github/workflows/test.yml`. Push pro seu fork dispara teste automático. Verde no Actions = pontos.
 
-### 5. README + screencast + entrega (~15min)
+### 5. Entrega
 
-`README.md` com:
-- Nome + opção Reanimated escolhida (A/B/C)
-- Comando rodar
-- 1 screenshot da `MovieList` mostrando ❤️ ativo
-- 1 screencast curto (15-30s) da animação Reanimated funcionando — pode ser GIF via [GIPHY Capture](https://giphy.com/apps/giphycapture) ou screen recording
-- 1 referência
+Push pro seu fork → abre PR. CI valida automático (autograder lê o código, sem exigir README/screencast).
 
 ---
 
@@ -120,12 +115,10 @@ CI workflow já vem em `.github/workflows/test.yml`. Push pro seu fork dispara t
 | Critério | Pontos |
 |---|---|
 | App roda sem erro (`npm install && npx expo start`) | 2 |
-| `useFavoritesStore` Zustand funcional (toggle, isFavorite, add, remove, clear) | 3 |
-| MMKV persistindo favoritos entre reloads | 2 |
-| Reanimated não-trivial rodando na UI thread (worklets) | 3 |
+| `useFavoritesStore` Zustand funcional (toggle, isFavorite, add, remove, clear) | 4 |
+| MMKV persistindo favoritos entre reloads | 3 |
+| Reanimated não-trivial rodando na UI thread (worklets) | 4 |
 | **CI GitHub Actions verde** (≥ 6 testes Jest verdes, gerados com auxílio de IA) | 2 |
-| README + screenshot + screencast/GIF da animação | 2 |
-| 1 referência citada | 1 |
 
 **Total: 15 pts**
 
@@ -173,14 +166,14 @@ Resumo:
 1. Fork do repo público
 2. Branch `entrega/atividade-2-<seu-nome>`
 3. Pasta `exercicios/02-app-rn-navegacao-estado/<seu-nome>/` no SEU fork
-4. Código do app + README.md + screenshot + screencast.gif
+4. Código do app + README.md (comando de rodar + referência)
 5. Commit + push + link no Canvas
 
 ---
 
 ## Material de apoio (todos no GitHub público)
 
-- **[Starter `aula-02`](https://github.com/jacksonsmith/puc-iec-mobile-multiplataforma/tree/main/starters/aula-02)** — base obrigatória (com TODOs guiados, CI configurado, testes prontos pra preencher)
+- **[Starter `aula-02`](https://github.com/jacksonsmith/puc-iec-mobile-multiplataforma/tree/main/exercicios/02-app-rn-navegacao-estado/starter)** — base obrigatória (com TODOs guiados, CI configurado, testes prontos pra preencher)
 - **[guia-passo-a-passo.md](https://github.com/jacksonsmith/puc-iec-mobile-multiplataforma/blob/main/exercicios/02-app-rn-navegacao-estado/guia-passo-a-passo.md)** — comandos + código exemplo
 - **[template-relatorio.md](https://github.com/jacksonsmith/puc-iec-mobile-multiplataforma/blob/main/exercicios/02-app-rn-navegacao-estado/template-relatorio.md)** — README modelo
 - **[Material aula 2](https://github.com/jacksonsmith/puc-iec-mobile-multiplataforma/tree/main/material-de-apoio/aula-02)** (Meta New Arch, Hermes, Reanimated)

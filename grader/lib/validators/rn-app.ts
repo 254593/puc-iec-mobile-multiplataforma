@@ -3,15 +3,14 @@
  *
  * Calibrado pela RUBRICA REAL do enunciado (15 pts):
  *   1. App roda sem erro (entry point + Expo/RN no package.json)            — 2pts
- *   2. useFavoritesStore Zustand (toggle, isFavorite, add, remove, clear)   — 3pts
- *   3. MMKV persistindo favoritos                                           — 2pts
- *   4. Reanimated worklets não-triviais (useSharedValue + useAnimatedStyle) — 3pts
+ *   2. useFavoritesStore Zustand (toggle, isFavorite, add, remove, clear)   — 4pts
+ *   3. MMKV persistindo favoritos                                           — 3pts
+ *   4. Reanimated worklets não-triviais (useSharedValue + useAnimatedStyle) — 4pts
  *   5. ≥ 6 testes Jest                                                      — 2pts
- *   6. README + screenshot + screencast/GIF                                 — 2pts
- *   7. 1 referência citada                                                  — 1pt
  *
  * PRINCÍPIO: NOTA MÍNIMA. Só credita o que consegue PROVAR estaticamente —
- * "na dúvida, não dá ponto". A revisão manual no Canvas só SOMA a partir daqui.
+ * "na dúvida, não dá ponto". Sem critério manual (README/screencast removido) —
+ * autoScore == total; nota final no Canvas ainda pode ajustar por arguição.
  * Min pra status check verde: 60% (9/15).
  */
 
@@ -59,12 +58,14 @@ function readFileSafe(path: string): string | null {
   }
 }
 
-/** Busca recursiva por extensão, ignorando node_modules e ocultos. */
+const IGNORED_DIRS = new Set(['node_modules', 'dist', 'build', 'coverage', '.expo']);
+
+/** Busca recursiva por extensão, ignorando node_modules, builds e ocultos. */
 function findFiles(dir: string, exts: string[], depth = 6): string[] {
   if (!existsSync(dir) || depth <= 0) return [];
   const result: string[] = [];
   for (const entry of readdirSync(dir)) {
-    if (entry === 'node_modules' || entry.startsWith('.')) continue;
+    if (IGNORED_DIRS.has(entry) || entry.startsWith('.')) continue;
     const path = join(dir, entry);
     try {
       const stat = statSync(path);
@@ -79,9 +80,22 @@ function findFiles(dir: string, exts: string[], depth = 6): string[] {
 
 const codeExts = ['.tsx', '.ts', '.jsx', '.js'];
 
-/** Concatena o conteúdo de todos os arquivos de código (1 leitura por arquivo). */
+/**
+ * Remove comentários (linha inteira `//...` e blocos `/* *​/`) antes dos regex.
+ * Sem isso, código de referência deixado comentado nos TODOs do starter
+ * (ex.: `// storage.set(k, v)`) conta como implementado.
+ */
+function stripComments(src: string): string {
+  return src
+    .split('\n')
+    .map((line) => (/^\s*\/\//.test(line) ? '' : line))
+    .join('\n')
+    .replace(/\/\*[\s\S]*?\*\//g, '');
+}
+
+/** Concatena o conteúdo de todos os arquivos de código (1 leitura por arquivo), sem comentários. */
 function readAllCode(files: string[]): string {
-  return files.map((f) => readFileSafe(f) ?? '').join('\n');
+  return stripComments(files.map((f) => readFileSafe(f) ?? '').join('\n'));
 }
 
 /** Quantos dos regexes batem no corpo. */
@@ -138,12 +152,12 @@ async function main() {
     /\bclear(Favorit|All)?\w*\b/i,
   ]);
   // conservador: precisa do store Zustand E dos métodos; nota proporcional aos métodos achados
-  const c2 = hasZustand ? Math.round((methodHits / 5) * 3 * 100) / 100 : 0;
+  const c2 = hasZustand ? Math.round((methodHits / 5) * 4 * 100) / 100 : 0;
   criteria.push({
     id: 'favorites-store',
     description: 'useFavoritesStore Zustand (toggle, isFavorite, add, remove, clear)',
-    weight: 3,
-    earned: Math.min(c2, 3),
+    weight: 4,
+    earned: Math.min(c2, 4),
     publicNote: hasZustand
       ? `Zustand + ${methodHits}/5 métodos detectados`
       : 'Não encontrei um store Zustand (create(...) de "zustand")',
@@ -153,14 +167,14 @@ async function main() {
   // ---- Critério 3: MMKV persistência — 2pts ----
   const hasMmkvImport = /from\s+['"]react-native-mmkv['"]/.test(code) || /new\s+MMKV\s*\(/.test(code);
   const hasPersistUse = /\.set\s*\(|\.getString\s*\(|useMMKV|subscribe\s*\(|loadInitial|persist\s*\(/.test(code);
-  const c3 = hasMmkvImport && hasPersistUse ? 2 : hasMmkvImport ? 1 : 0;
+  const c3 = hasMmkvImport && hasPersistUse ? 3 : hasMmkvImport ? 1 : 0;
   criteria.push({
     id: 'mmkv',
     description: 'MMKV persistindo favoritos entre reloads',
-    weight: 2,
+    weight: 3,
     earned: c3,
     publicNote:
-      c3 === 2
+      c3 === 3
         ? 'MMKV + leitura/escrita (set/get ou subscribe) detectados'
         : c3 === 1
           ? 'Importou MMKV mas não vi escrita/leitura persistente'
@@ -176,14 +190,14 @@ async function main() {
   const reaSignals = [hasReaImport, hasSharedValue, hasAnimatedStyle, hasAnimPrimitive].filter(Boolean).length;
   // conservador: 3 só com import + sharedValue + animatedStyle; senão proporcional aos sinais
   const c4 =
-    hasReaImport && hasSharedValue && hasAnimatedStyle ? 3 : Math.round((reaSignals / 4) * 3 * 100) / 100;
+    hasReaImport && hasSharedValue && hasAnimatedStyle ? 4 : Math.round((reaSignals / 4) * 4 * 100) / 100;
   criteria.push({
     id: 'reanimated',
     description: 'Reanimated worklets (useSharedValue + useAnimatedStyle na UI thread)',
-    weight: 3,
-    earned: Math.min(c4, 3),
+    weight: 4,
+    earned: Math.min(c4, 4),
     publicNote:
-      c4 === 3
+      c4 === 4
         ? 'useSharedValue + useAnimatedStyle detectados'
         : reaSignals > 0
           ? `Reanimated parcial (${reaSignals}/4 sinais: import/sharedValue/animatedStyle/withX)`
@@ -206,40 +220,6 @@ async function main() {
         ? `${testCount} testes encontrados (execução verde é validada pelo CI do exercício)`
         : `Só ${testCount} testes encontrados (mínimo 6)`,
     privateNote: `testFiles=${testFiles.length} testCount=${testCount}`,
-  });
-
-  // ---- Critério 6: README + screenshot + screencast — 2pts (conservador) ----
-  const readmePath = ['README.md', 'README.MD', 'readme.md'].map((n) => join(args.entrega, n)).find(existsSync);
-  const readme = readmePath ? (readFileSafe(readmePath) ?? '') : '';
-  const hasImage = /!\[[^\]]*\]\([^)]+\.(png|jpe?g|webp|svg)/i.test(readme) || /<img[^>]+src=/i.test(readme);
-  const hasMedia =
-    /\.(gif|mp4|mov|webm)/i.test(readme) || /(loom\.com|youtu\.?be|youtube\.com|streamable)/i.test(readme);
-  const c6 = (hasImage ? 1 : 0) + (hasMedia ? 1 : 0);
-  criteria.push({
-    id: 'readme-media',
-    description: 'README + screenshot + screencast/GIF',
-    weight: 2,
-    manual: true, // autenticidade/qualidade do README não é auto-verificável → Canvas
-    earned: c6,
-    publicNote: !readmePath
-      ? 'README.md ausente na raiz da entrega'
-      : `${hasImage ? '✅ screenshot' : '❌ sem screenshot'} · ${hasMedia ? '✅ screencast/GIF' : '❌ sem screencast/GIF'}`,
-    privateNote: `readme=${!!readmePath} img=${hasImage} media=${hasMedia}`,
-  });
-
-  // ---- Critério 7: 1 referência — 1pt (link http no README, fora de imagem/badge) ----
-  const refLinks = (readme.match(/https?:\/\/[^\s)]+/g) ?? []).filter(
-    (u) => !/\.(png|jpe?g|gif|webp|svg|mp4|mov|webm)(\?|$)/i.test(u) && !/shields\.io|badge/i.test(u),
-  );
-  const c7 = refLinks.length >= 1 ? 1 : 0;
-  criteria.push({
-    id: 'referencia',
-    description: '1 referência citada',
-    weight: 1,
-    manual: true, // relevância da referência não é auto-verificável → Canvas
-    earned: c7,
-    publicNote: c7 ? 'Referência (link) encontrada no README' : 'Nenhum link de referência no README',
-    privateNote: `refLinks=${refLinks.length}`,
   });
 
   const { total } = computeScore(criteria);
