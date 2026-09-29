@@ -114,6 +114,28 @@ Os comentários dentro de cada `it.todo()` descrevem o que fazer.
 
 ---
 
+## Teste a instalação também no desktop
+
+O botão "Instalar" (`InstallButton`) já vem pronto e funciona em **desktop** (Chrome/Edge), não só
+mobile — o navegador dispara o mesmo evento `beforeinstallprompt` nas duas plataformas. Depois de
+rodar `npm run dev`, testa nos dois:
+
+- **Mobile:** abre no celular (mesma rede) ou emula pelo DevTools → botão "Instalar" no banner
+- **Desktop:** Chrome/Edge → ícone de instalação na barra de endereço (ou o banner customizado) → "Instalar"
+
+Não precisa mudar nada de código pra isso funcionar — é só confirmar que os dois caminhos abrem o
+app como janela standalone (sem barra de endereço).
+
+---
+
+## 🎁 Bônus (não pontua)
+
+- **`window-controls-overlay`**: troca `display: 'standalone'` por `display: 'window-controls-overlay'`
+  no manifest (`vite.config.ts`) pra um visual mais nativo em desktop (conteúdo ocupa até embaixo da
+  barra de título). Teste com `navigator.windowControlsOverlay` — [doc](https://developer.mozilla.org/en-US/docs/Web/API/WindowControlsOverlay).
+
+---
+
 ## Como rodar os testes
 
 ```bash

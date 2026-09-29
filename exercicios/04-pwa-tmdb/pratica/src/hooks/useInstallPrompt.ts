@@ -45,9 +45,11 @@ export function useInstallPrompt() {
   };
 
   const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isMobile = /iphone|ipad|ipod|android/i.test(navigator.userAgent);
+  const isDesktop = !isMobile; // Chrome/Edge desktop também dispara beforeinstallprompt
   const isStandalone =
     window.matchMedia('(display-mode: standalone)').matches ||
     (navigator as any).standalone === true;
 
-  return { canInstall: !!deferred, triggerInstall, isIOS, isStandalone };
+  return { canInstall: !!deferred, triggerInstall, isIOS, isDesktop, isStandalone };
 }

@@ -40,14 +40,14 @@ const btnStyle: React.CSSProperties = {
 };
 
 export function InstallButton() {
-  const { canInstall, triggerInstall, isIOS, isStandalone } = useInstallPrompt();
+  const { canInstall, triggerInstall, isIOS, isDesktop, isStandalone } = useInstallPrompt();
 
   if (isStandalone) return null;
 
   if (canInstall) {
     return (
       <div style={bannerStyle}>
-        <span>📲 Instale o app na tela inicial</span>
+        <span>{isDesktop ? '💻 Instale o app' : '📲 Instale o app na tela inicial'}</span>
         <button onClick={triggerInstall} style={btnStyle}>Instalar</button>
       </div>
     );
