@@ -43,8 +43,8 @@ flutterfire configure                   # escolhe "Create a new project" (ou usa
                                          # mas pro nosso caso (projeto pessoal, free tier) pode ir no PR sem problema
 ```
 No [console do Firebase](https://console.firebase.google.com/) do seu projeto:
-1. **Build → Firestore Database** → "Criar banco de dados" → modo **teste** (regras abertas 30 dias, suficiente pro exercício)
-2. **Build → Remote Config** → "Criar configuração" → adiciona um parâmetro chamado `banner_message` (string, valor padrão: `"Bem-vindo ao app de filmes!"`)
+1. **Build → Firestore Database** → "Criar banco de dados" → *Location*: pode manter a sugestão → modo **teste** (regras abertas por 30 dias). Se aparecer *backup* ou plano Blaze, **ignore** (exige plano pago).
+2. **Build → Remote Config** → "Criar configuração" → adiciona um parâmetro chamado `banner_message` (string, valor padrão: `"Bem-vindo ao app de filmes!"`) → **Publicar alterações** (sem publicar, o app não recebe o valor)
 
 > `dart` já vem **dentro do Flutter SDK** — não precisa instalar à parte. Se `dart` não for reconhecido, o Flutter não está no seu PATH.
 
@@ -65,6 +65,17 @@ class DefaultFirebaseOptions {
 }
 ```
 4. Siga normalmente com Firestore e Remote Config no console (passos abaixo).
+
+**Regras do Firestore.** O modo teste expira em 30 dias. Alternativa que não expira (Firestore → *Regras* → colar → *Publicar*):
+```
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /favorites/meus-favoritos { allow read, write: if true; }
+  }
+}
+```
+> Se escolher **modo produção**, tudo é negado e o favorito some no F5 sem aviso. No console do app aparece `permission-denied` (e, no `flutter test`, "No Firebase App" — esperado).
 
 > ⚠️ **Custo zero.** Firestore + Remote Config no plano Spark cobrem esse exercício de sobra (uso de sala de aula é irrisório perto do limite grátis). Nunca peça cartão de crédito pra fazer essa atividade.
 

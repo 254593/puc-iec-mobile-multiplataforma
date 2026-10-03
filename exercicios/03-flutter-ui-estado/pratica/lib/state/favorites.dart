@@ -6,6 +6,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // TODO [TASK 7]: descomente quando for fazer a persistência Firestore
 // import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:flutter/foundation.dart'; // debugPrint
 
 // ── Ex2 · TASK 2 — implemente o provider de favoritos · 🧑‍🏫 EM AULA (juntos) ──────────────────
 // Guarde os ids favoritados (um Set<int>) e exponha toggle(id) e clear():
@@ -44,17 +45,21 @@ final favoritesProvider = Provider<Set<int>>((ref) => const <int>{});
 //         final doc = await FirebaseFirestore.instance.doc(_favDoc).get();
 //         final ids = (doc.data()?['ids'] as List<dynamic>?)?.cast<int>() ?? <int>[];
 //         state = ids.toSet();
-//       } catch (_) {
-//         // offline, ou `flutter test` — mantém vazio (mesmo comportamento do TASK 2)
+//       } catch (e) {
+//         // offline, ou `flutter test` — mantém vazio (mesmo comportamento do TASK 2).
+//         // O erro aparece no console: `permission-denied` = revise as REGRAS do Firestore.
+//         // (no `flutter test` aparece "No Firebase App" — é esperado, o Firebase não sobe em teste)
+//         debugPrint('Firestore (ler): $e');
 //       }
 //     }
 //
 //     Future<void> _persist(Set<int> next) async {
 //       try {
 //         await FirebaseFirestore.instance.doc(_favDoc).set({'ids': next.toList()});
-//       } catch (_) {
+//       } catch (e) {
 //         // offline, ou `flutter test` (Firebase não inicializado em widget test) — tudo bem,
 //         // o estado local (otimista) já refletiu a mudança na UI.
+//         debugPrint('Firestore (gravar): $e'); // `permission-denied` = regras
 //       }
 //     }
 //
