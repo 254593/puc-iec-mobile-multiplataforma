@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'screens/home_screen.dart';
+import 'theme/app_theme.dart';
 
 // TODO [TASK 3 + TASK 7]: descomente depois de rodar `flutterfire configure`
 // (gera lib/firebase_options.dart — ver "Setup Firebase" no enunciado)
@@ -28,10 +29,7 @@ class MovieApp extends StatelessWidget {
     return MaterialApp(
       title: 'Filmes',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorSchemeSeed: const Color(0xFF003366),
-        useMaterial3: true,
-      ),
+      theme: AppTheme.dark(), // tema pronto (dark premium) — você não precisa mexer
       home: const HomeScreen(),
     );
   }
