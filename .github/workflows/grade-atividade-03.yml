@@ -15,7 +15,7 @@ permissions:
 env:
   EXERCISE: exercicios/03-flutter-ui-estado
   VALIDATOR: flutter-ui-estado.ts
-  ATIVIDADE: 'Atividade 3 — App Flutter: UI + Estado + Testes'
+  ATIVIDADE: 'Atividade 3 — App Flutter: UI + Estado + Firebase'
 
 jobs:
   grade:
