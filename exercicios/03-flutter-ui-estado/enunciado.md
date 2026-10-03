@@ -46,6 +46,26 @@ No [console do Firebase](https://console.firebase.google.com/) do seu projeto:
 1. **Build → Firestore Database** → "Criar banco de dados" → modo **teste** (regras abertas 30 dias, suficiente pro exercício)
 2. **Build → Remote Config** → "Criar configuração" → adiciona um parâmetro chamado `banner_message` (string, valor padrão: `"Bem-vindo ao app de filmes!"`)
 
+> `dart` já vem **dentro do Flutter SDK** — não precisa instalar à parte. Se `dart` não for reconhecido, o Flutter não está no seu PATH.
+
+**Plano B — sem CLI** (se `npm install -g` ou o `firebase login` travarem, ex.: máquina sem permissão de administrador):
+1. [Console do Firebase](https://console.firebase.google.com/) → **Adicionar projeto** (plano Spark, sem cartão).
+2. Visão geral → ícone **`</>` (Web)** → registre o app (apelido qualquer) → copie o objeto `firebaseConfig`.
+3. Crie **`lib/firebase_options.dart`** com os seus valores (o `flutterfire configure` só gera esse arquivo pra você):
+```dart
+import 'package:firebase_core/firebase_core.dart';
+
+class DefaultFirebaseOptions {
+  static const FirebaseOptions currentPlatform = FirebaseOptions(
+    apiKey: 'SUA_API_KEY',
+    appId: 'SEU_APP_ID',
+    messagingSenderId: 'SEU_SENDER_ID',
+    projectId: 'SEU_PROJECT_ID',
+  );
+}
+```
+4. Siga normalmente com Firestore e Remote Config no console (passos abaixo).
+
 > ⚠️ **Custo zero.** Firestore + Remote Config no plano Spark cobrem esse exercício de sobra (uso de sala de aula é irrisório perto do limite grátis). Nunca peça cartão de crédito pra fazer essa atividade.
 
 ---
