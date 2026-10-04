@@ -42,4 +42,7 @@ Comece com os testes **vermelhos**; deixe-os **verdes**. `test/checklist_test.da
 Fork + PR no repo público; link no Canvas. O **J.A.R.V.I.S.** lê o seu código (estrutural) e posta uma nota **mínima**; a final sai no Canvas.
 - ✏️ **Edite os arquivos dentro de `exercicios/03-flutter-ui-estado/pratica/` (no lugar)** — **não crie subpasta** `aluno-.../`.
 
+> **CI no seu fork (opcional):** habilite o *Actions* do fork — o workflow *Flutter test — Atividade 3* roda `flutter analyze` + `flutter test` a cada push.
+> **Versões:** precisa de Flutter **3.27+** (o `pubspec` já avisa se for mais antigo).
+
 > **Não comite** `.dart_tool/`, `build/`, `pubspec.lock` (já no `.gitignore`).

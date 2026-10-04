@@ -4,7 +4,8 @@ publish_to: "none"
 version: 1.0.0
 
 environment:
-  sdk: ">=3.3.0 <4.0.0"
+  sdk: ">=3.6.0 <4.0.0"
+  flutter: ">=3.27.0"  # o tema usa Color.withValues / CardThemeData (Flutter 3.27+)
 
 dependencies:
   flutter:

@@ -173,6 +173,7 @@ Uma fonte só (`favoritesProvider`) refletindo no **card**, no **contador** e no
 
 ## Entrega
 - **Fork + Pull Request** no repo público; cole o link no Canvas.
+- (Opcional) **CI no seu fork:** habilite o *Actions* do seu fork — o workflow **Flutter test — Atividade 3** roda `flutter analyze` + `flutter test` a cada push e mostra ✅/❌ (seu feedback rápido; o J.A.R.V.I.S. só lê o código e comenta a nota mínima).
 - **Hands-on da aula não pontua** — a entrega solo vale os 15 pts.
 - ✏️ **Edite os arquivos dentro de `exercicios/03-flutter-ui-estado/pratica/` (no lugar)** — **não crie subpasta** `aluno-.../`.
 - **README:** além do parágrafo (local vs cloud vs offline-first), inclua 1 print ou GIF curto mostrando o favorito sobrevivendo ao refresh (prova do Firestore funcionando) — é o que o professor confere na correção manual do Ex4/Ex5. Se quiser, adicione também 1 print do app **offline** (banner + lista).

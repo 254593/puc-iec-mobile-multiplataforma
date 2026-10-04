@@ -1,0 +1,34 @@
+name: Flutter test — Atividade 3 (roda no SEU fork)
+
+# CI do ALUNO: a cada push no seu fork roda analyze + flutter test da Atividade 3 e mostra o resultado
+# na aba Actions (habilite o Actions do seu fork). SEM `pull_request_target` e SEM segredos: roda o
+# SEU código no SEU repositório — seguro. O autograder do professor (grade-atividade-03.yml) é outro:
+# só LÊ o código do PR e comenta a nota mínima.
+on:
+  push:
+    paths:
+      - 'exercicios/03-flutter-ui-estado/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    # No repo da disciplina o projeto base começa VERMELHO de propósito — só roda em forks.
+    if: github.repository_owner != 'jacksonsmith'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: exercicios/03-flutter-ui-estado/pratica
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.7'
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: flutter test --reporter expanded
