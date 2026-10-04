@@ -7,7 +7,7 @@ Auto-correção das atividades práticas via GitHub Actions. Aluno faz **fork �
 | # | Atividade | Validator | Status |
 |---|-----------|-----------|--------|
 | A2 | App RN: Favoritos + MMKV + Reanimated | `rn-app.ts` | **calibrado (rubrica real)** |
-| A3 | Native Module comparativo | `native-module.ts` | a calibrar |
+| A3 | App Flutter: UI + Estado + Firebase + Offline-first | `flutter-ui-estado.ts` | **calibrado (rubrica real: 12 auto + 3 manual)** |
 | A4 | PWA offline-first | `pwa-lighthouse.ts` | a calibrar |
 | A5 | GraphQL + Auth | `graphql-auth.ts` | a calibrar |
 

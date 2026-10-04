@@ -3,6 +3,7 @@
 // Rode `flutter test`. Se TUDO aqui passar, você concluiu a Atividade 3.
 // É o seu checklist de conclusão (ponta a ponta) — diferente do app_test.dart:
 // app_test = a spec de cada exercício; aqui = "terminei tudo?".
+// As TASKs de offline-first (11–15) têm a spec em test/offline_test.dart — `flutter test` roda tudo.
 
 import 'dart:io';
 import 'package:flutter/material.dart';

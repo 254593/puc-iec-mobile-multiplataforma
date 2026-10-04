@@ -1,14 +1,20 @@
 /**
  * Validator — Atividade 3 — App Flutter: UI + Estado + Firebase (Arquitetura).
  *
- * RUBRICA REAL do enunciado (15 pts):
- *  1. App compila/roda + `flutter analyze` limpo               — 2pts [MANUAL · eliminatório]
- *  2. Ex1 · MovieCard compõe título + nota (⭐) + ano           — 2pts
- *  3. Ex2 · favoritar (local) reflete no card + contador + limpar — 2pts
- *  4. Ex4 · Firestore — favoritos persistem após reload        — 4pts
- *  5. Ex5 · Remote Config — banner busca valor remoto          — 2pts
- *  6. Ex3 · teste autoral do provider local (favorites_test)   — 2pts
- *  7. README + parágrafo (local vs cloud)                      — 1pt  [MANUAL]
+ * RUBRICA REAL do enunciado (15 pts = 12 automáticos + 3 manuais):
+ *  M. App compila/roda + `flutter analyze` limpo               — 2pts [MANUAL · eliminatório]
+ *  1. Ex1 · MovieCard compõe título + nota (⭐) + ano           — 1pt
+ *  2. Ex2 · favoritar (local) reflete no card + contador + limpar — 1pt
+ *  3. Ex3 · teste autoral do provider local (favorites_test)   — 1pt
+ *  4. Ex4 · Firestore — favoritos persistem após reload        — 1,5pt
+ *  5. Ex5 · Remote Config — banner busca valor remoto          — 1pt
+ *  6. T10 · persistência offline do Firestore (main.dart)      — 0,5pt
+ *  7. T11 · OfflineBanner                                      — 1pt
+ *  8. T12 · Movie.toJson / fromJson                            — 1pt
+ *  9. T13 · repositório cache-first (stale-while-revalidate)   — 1,5pt
+ * 10. T14 · validade do cache (TTL)                            — 1pt
+ * 11. T15 · SyncQueue (conflitos + flush)                      — 1,5pt  (difícil)
+ *  R. README + parágrafo (local vs cloud)                      — 1pt  [MANUAL]
  *
  * ESTRUTURAL: só LÊ os .dart da entrega (nunca executa código do aluno, nunca acessa
  * o Firestore/Remote Config real do aluno) — seguro sob pull_request_target. **Ignora
@@ -58,6 +64,10 @@ async function main() {
   const remoteConfig = byName('remote_config.dart');
   const favTest = byName('favorites_test.dart');
   const main_ = byName('main.dart');
+  const bannerCode = byName('offline_banner.dart');
+  const movieCode = byName('movie.dart');
+  const repoCode = byName('movie_repository.dart');
+  const queueCode = byName('sync_queue.dart');
 
   // ---- 1. Compila/analyze — MANUAL (eliminatório) ----
   criteria.push({
@@ -76,8 +86,8 @@ async function main() {
   criteria.push({
     id: 'ex1-ui',
     description: 'Ex1 · MovieCard compõe título + nota (⭐) + ano',
-    weight: 2,
-    earned: bits >= 6 ? 2 : bits >= 4 ? 1.5 : bits >= 2 ? 1 : 0,
+    weight: 1,
+    earned: bits >= 6 ? 1 : bits >= 4 ? 0.75 : bits >= 2 ? 0.5 : 0,
     publicNote: `${bits}/6 elementos no card (Card/Column/Row/Icon/rating/ano)`,
   });
 
@@ -96,8 +106,8 @@ async function main() {
   criteria.push({
     id: 'ex2-fav-local',
     description: 'Ex2 · favoritar (local) reflete no card + contador + limpar',
-    weight: 2,
-    earned: Math.round((ex2Signals / 4) * 2 * 100) / 100,
+    weight: 1,
+    earned: Math.round((ex2Signals / 4) * 1 * 100) / 100,
     publicNote: `provider+toggle=${providerOk} · card=${cardConsumer} · contador=${headerCount} · limpar=${clearInProvider && clearButton}`,
   });
 
@@ -115,8 +125,8 @@ async function main() {
   criteria.push({
     id: 'ex4-firestore',
     description: 'Ex4 · Firestore — favoritos persistem após reload',
-    weight: 4,
-    earned: Math.round((firestoreSignals / 4) * 4 * 100) / 100,
+    weight: 1.5,
+    earned: Math.round((firestoreSignals / 4) * 1.5 * 100) / 100,
     publicNote: `import=${firestoreImport} · Firebase.initializeApp no main=${firebaseInitialized} · leitura=${firestoreRead} · escrita=${firestoreWrite} (persistência real conferida na leitura manual + print/GIF do README)`,
   });
 
@@ -129,8 +139,8 @@ async function main() {
   criteria.push({
     id: 'ex5-remote-config',
     description: 'Ex5 · Remote Config — banner busca valor remoto',
-    weight: 2,
-    earned: Math.round((rcSignals / 4) * 2 * 100) / 100,
+    weight: 1,
+    earned: Math.round((rcSignals / 4) * 1 * 100) / 100,
     publicNote: `import=${rcImport} · fetchAndActivate=${rcFetch} · getString=${rcGet} · usado no HomeScreen=${rcUsedInHome}`,
   });
 
@@ -140,15 +150,98 @@ async function main() {
   criteria.push({
     id: 'ex3-teste',
     description: 'Ex3 · teste autoral do provider local (test/favorites_test.dart)',
-    weight: 2,
-    earned: hasTest && usesProvider ? 2 : hasTest || usesProvider ? 1 : 0,
+    weight: 1,
+    earned: hasTest && usesProvider ? 1 : hasTest || usesProvider ? 0.5 : 0,
     publicNote:
       hasTest && usesProvider
         ? 'teste do provider escrito (test() usando favoritesProvider)'
         : 'favorites_test.dart sem um test() de verdade usando favoritesProvider',
   });
 
-  // ---- 7. README + parágrafo — MANUAL ----
+  // ---- 6. T10 — persistência offline do Firestore (0,5) ----
+  const persistOn = /persistenceEnabled\s*:\s*true/.test(main_);
+  criteria.push({
+    id: 't10-persistencia',
+    description: 'T10 · persistência offline do Firestore ligada (main.dart)',
+    weight: 0.5,
+    earned: persistOn ? 0.5 : 0,
+    publicNote: persistOn
+      ? 'Settings(persistenceEnabled: true) encontrado no main.dart'
+      : 'falta `FirebaseFirestore.instance.settings = const Settings(persistenceEnabled: true)` no main.dart',
+  });
+
+  // ---- 7. T11 — OfflineBanner (1) ----
+  const bannerConsumer = /ConsumerWidget/.test(bannerCode) && /ref\.watch\(\s*onlineProvider/.test(bannerCode);
+  const bannerText = /Você está offline — mostrando dados salvos/.test(bannerCode);
+  const bannerCond = /online\s*\?|!\s*online|if\s*\(\s*online|if\s*\(\s*!\s*online/.test(bannerCode);
+  const bannerSignals = [bannerConsumer, bannerText, bannerCond].filter(Boolean).length;
+  criteria.push({
+    id: 't11-banner',
+    description: 'T11 · OfflineBanner mostra o aviso só quando offline',
+    weight: 1,
+    earned: Math.round((bannerSignals / 3) * 1 * 100) / 100,
+    publicNote: `ConsumerWidget+onlineProvider=${bannerConsumer} · texto exato=${bannerText} · condição online/offline=${bannerCond}`,
+  });
+
+  // ---- 8. T12 — serialização (1) ----
+  const toJsonDone = !/toJson\(\)\s*=>\s*throw/.test(movieCode) && /toJson\(\)/.test(movieCode) && /'title'/.test(movieCode);
+  const fromJsonDone =
+    !/Movie\.fromJson\([^)]*\)\s*=>\s*throw/.test(movieCode) && /Movie\.fromJson/.test(movieCode) && /toDouble\(\)/.test(movieCode);
+  criteria.push({
+    id: 't12-serializacao',
+    description: 'T12 · Movie.toJson e Movie.fromJson',
+    weight: 1,
+    earned: (toJsonDone ? 0.5 : 0) + (fromJsonDone ? 0.5 : 0),
+    publicNote: `toJson=${toJsonDone} · fromJson (com toDouble p/ rating inteiro)=${fromJsonDone}`,
+  });
+
+  // ---- 9/10. T13 + T14 — repositório ----
+  const watchIdx = repoCode.indexOf('watchMovies');
+  const watchBody = watchIdx >= 0 ? repoCode.slice(watchIdx) : '';
+  const yields = (watchBody.match(/\byield\b/g) ?? []).length;
+  const cacheFirst = /readCache\(\)/.test(watchBody) && yields >= 2;
+  const writesFresh = /writeCache\(/.test(watchBody);
+  const offlineSafe = /OfflineException|catch\s*\(/.test(watchBody) && /rethrow/.test(watchBody);
+  const t13Signals = [cacheFirst, writesFresh, offlineSafe].filter(Boolean).length;
+  criteria.push({
+    id: 't13-cache-first',
+    description: 'T13 · repositório cache-first (emite o cache, revalida, tolera offline)',
+    weight: 1.5,
+    earned: Math.round((t13Signals / 3) * 1.5 * 100) / 100,
+    publicNote: `cache primeiro (readCache + 2 yields)=${cacheFirst} · grava o fresco=${writesFresh} · offline com cache segue / sem cache falha=${offlineSafe}`,
+  });
+
+  const statusIdx = repoCode.indexOf('cacheStatus()');
+  const statusBody = statusIdx >= 0 ? repoCode.slice(statusIdx, watchIdx > statusIdx ? watchIdx : undefined) : '';
+  const statusImpl = /\bttl\b/.test(statusBody) && /now\(\)/.test(statusBody) && /CacheStatus\.(fresh|stale)/.test(statusBody);
+  const ttlUsed = /cacheStatus\(\)/.test(watchBody);
+  criteria.push({
+    id: 't14-ttl',
+    description: 'T14 · validade do cache (TTL): cacheStatus + não buscar quando fresco',
+    weight: 1,
+    earned: (statusImpl ? 0.5 : 0) + (ttlUsed ? 0.5 : 0),
+    publicNote: `cacheStatus com ttl e now()=${statusImpl} · usado no watchMovies=${ttlUsed}`,
+  });
+
+  // ---- 11. T15 — SyncQueue (1,5) ----
+  const enqIdx = queueCode.indexOf('enqueue(');
+  const flushIdx = queueCode.indexOf('flush(');
+  const enqBody = enqIdx >= 0 ? queueCode.slice(enqIdx, flushIdx > enqIdx ? flushIdx : undefined) : '';
+  const flushBody = flushIdx >= 0 ? queueCode.slice(flushIdx) : '';
+  const conflicts =
+    /movieId\s*==\s*op\.movieId/.test(enqBody) &&
+    /\.add\s*(==|!=)\s*op\.add/.test(enqBody) &&
+    /removeAt|removeWhere|\.remove\(/.test(enqBody);
+  const flushOk = /\bsend\(/.test(flushBody) && /break|return\s+sent/.test(flushBody) && /_save\(/.test(flushBody);
+  criteria.push({
+    id: 't15-fila',
+    description: 'T15 · SyncQueue: regras de conflito no enqueue + flush na ordem, parando no 1º erro',
+    weight: 1.5,
+    earned: (conflicts ? 0.75 : 0) + (flushOk ? 0.75 : 0),
+    publicNote: `conflitos (mesma ação / ação oposta)=${conflicts} · flush (send + parar no erro + persistir a cada sucesso)=${flushOk}`,
+  });
+
+  // ---- R. README + parágrafo — MANUAL ----
   criteria.push({
     id: 'readme',
     description: 'README — como rodar + parágrafo (local vs cloud) + print/GIF do Firestore',

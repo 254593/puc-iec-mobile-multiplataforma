@@ -4,6 +4,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'data/key_value_store.dart';
+import 'state/movies_provider.dart';
 
 import 'screens/home_screen.dart';
 import 'theme/app_theme.dart';
@@ -15,10 +19,21 @@ import 'theme/app_theme.dart';
 // import 'firebase_options.dart';
 
 Future<void> main() async {
-  // TODO [TASK 3 + TASK 7]: descomente as 2 linhas abaixo
-  // WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized(); // necessário p/ SharedPreferences (e p/ o Firebase)
+  final prefs = await SharedPreferences.getInstance(); // o "armário" que sobrevive ao F5
+
+  // TODO [TASK 3 + TASK 7]: descomente a linha abaixo
   // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const ProviderScope(child: MovieApp()));
+
+  // TODO [TASK 10 · 🧑‍🏫 EM AULA · fácil]: ligue a persistência OFFLINE do Firestore (logo depois do initializeApp):
+  //   FirebaseFirestore.instance.settings = const Settings(persistenceEnabled: true);
+  // (precisa de: import 'package:cloud_firestore/cloud_firestore.dart';)
+  // Efeito: escritas feitas sem rede ficam numa fila local do Firestore e sincronizam sozinhas na volta.
+
+  runApp(ProviderScope(
+    overrides: [storeProvider.overrideWithValue(SharedPrefsStore(prefs))],
+    child: const MovieApp(),
+  ));
 }
 
 class MovieApp extends StatelessWidget {

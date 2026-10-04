@@ -1,11 +1,11 @@
-# Atividade 3 — App Flutter: UI + Estado + Firebase (15 pts)
+# Atividade 3 — App Flutter: UI + Estado + Firebase + Offline-first (15 pts)
 
 **Disciplina:** Arquitetura de Aplicações Móveis e Multiplataforma
 **Aula:** 3 · **Entrega:** ver Canvas
-**Modalidade:** individual · **Dificuldade:** ⭐⭐⭐ Médio-difícil
+**Modalidade:** individual · **Dificuldade:** ⭐⭐⭐ Médio-difícil · **Tempo estimado:** ~1h em aula + **~4–5h em casa** (a TASK 15 é o desafio)
 **Auto-grade:** ✅ (J.A.R.V.I.S. lê seu PR)
 
-> Na Aula 3 você viu Flutter por dentro — **widgets, composição e estado com Riverpod** — e começou a montar o `MovieCard` no DartPad. **Esta atividade é o término disso, num projeto Flutter de verdade**, e estende o estado local pra **cloud com Firebase** (Firestore + Remote Config). Você baixa o projeto (que já roda), completa os scaffolds e faz os **testes ficarem verdes** — inclusive **um teste que você mesmo escreve**.
+> Na Aula 3 você viu Flutter por dentro — **widgets, composição e estado com Riverpod** — e começou a montar o `MovieCard` no DartPad. **Esta atividade é o término disso, num projeto Flutter de verdade**, e estende o estado local pra **cloud com Firebase** (Firestore + Remote Config) e pra uma arquitetura **offline-first** (o app funciona sem rede). Você baixa o projeto (que já roda), completa os scaffolds e faz os **testes ficarem verdes** — inclusive **um teste que você mesmo escreve**.
 
 ## Objetivos de aprendizagem (Bloom)
 - **Entender** — explicar a UI do Flutter como **árvore de widgets** e por que estado compartilhado pede um *provider* (e não prop drilling).
@@ -14,10 +14,11 @@
 - **Aplicar (Ex3)** — **escrever um teste automatizado** do estado (`flutter test` com `ProviderContainer`).
 - **Aplicar (Ex4)** — **persistir estado na nuvem** com **Firestore**, substituindo a fonte de verdade local por um documento remoto.
 - **Aplicar (Ex5)** — **consumir configuração remota** com **Firebase Remote Config** pra controlar comportamento da UI sem novo deploy.
+- **Aplicar/Criar (Ex6 · offline-first)** — **cache-first com validade (TTL)**, **serialização**, **banner de conexão** e uma **fila de sincronização** com resolução de conflito — a mesma arquitetura que apps reais usam pra continuar úteis sem internet.
 - **Avaliar** — argumentar (README, 1 parágrafo) o trade-off entre estado **local** (rápido, offline, mas preso ao device) e estado **cloud** (sincroniza entre devices, mas depende de rede/latência).
 
 ## 📍 Em aula (🧑‍🏫) × em casa (🧑‍💻)
-Fazemos **juntos em aula**: **TASK 1** (compor o card), **TASK 2** (provider local) e **TASK 3** (criar seu projeto Firebase + `flutterfire configure` — cada aluno com o próprio projeto grátis). **TASK 4–9 você termina sozinho** (parte solo avaliativa).
+Fazemos **juntos em aula**: **TASK 1** (compor o card), **TASK 2** (provider local) e **TASK 3** (criar seu projeto Firebase + `flutterfire configure` — cada aluno com o próprio projeto grátis). **TASK 10** (ligar a persistência offline do Firestore — 1 linha, 5 min). **TASK 4–9 e 11–15 você termina sozinho** (parte solo avaliativa).
 
 ---
 
@@ -122,24 +123,57 @@ Uma fonte só (`favoritesProvider`) refletindo no **card**, no **contador** e no
 
 ---
 
+## Exercício 6 — Offline-first: o app funciona sem internet
+**Ideia:** a tela sempre mostra o que está **no aparelho** e atualiza quando a rede deixa. A UI nunca fala com a API direto — passa por um **repositório** (a "fonte da verdade"). A API deste exercício é **simulada** (sem rede, sem token, sem custo) e o botão ✈️ da barra do topo liga o **modo avião** — assim você testa o offline de forma determinística.
+
+```
+ Tela (Riverpod) ──► Repositório ──► Armário local (cache)  ◄── lido PRIMEIRO
+                         │
+                         └──► API simulada (offline? → OfflineException)
+ Favoritos feitos offline ──► SyncQueue (fila) ──► enviados quando a rede volta
+```
+
+| TASK | Arquivo | Nível | O que fazer |
+|---|---|---|---|
+| 🧑‍🏫 **10** | `lib/main.dart` | fácil · **aula** | Ligar a persistência offline do Firestore: `FirebaseFirestore.instance.settings = const Settings(persistenceEnabled: true);` |
+| 🧑‍💻 **11** | `widgets/offline_banner.dart` | fácil | Mostrar `Você está offline — mostrando dados salvos` quando `onlineProvider` for `false` |
+| 🧑‍💻 **12** | `models/movie.dart` | fácil | Implementar `toJson()` e `Movie.fromJson()` (o cache guarda JSON) |
+| 🧑‍💻 **13** | `data/movie_repository.dart` | **médio** | `watchMovies()` **cache-first**: emitir o cache na hora, revalidar na API, gravar o fresco; offline com cache segue, sem cache falha |
+| 🧑‍💻 **14** | `data/movie_repository.dart` | **médio** | **TTL**: `cacheStatus()` (none/fresh/stale) e **não buscar na API** se o cache ainda está fresco |
+| 🧑‍💻 **15** | `data/sync_queue.dart` | 🔴 **difícil** | `SyncQueue`: **regras de conflito** no `enqueue` (mesma ação não duplica; ação oposta **cancela**) e `flush` **na ordem**, **persistindo a cada sucesso** e **parando no 1º erro** |
+
+✅ **Como conferir:** `flutter test test/offline_test.dart` — cada grupo de testes é uma TASK (começa tudo vermelho).
+✅ **Como ver funcionando:** `flutter run -d chrome` → clique no ✈️ → o banner aparece e a lista continua (vinda do cache). No navegador, **DevTools → Network → Offline** também vale.
+
+> **Por que a TASK 15 é difícil:** não é código longo — é **raciocínio**: o que acontece se você favoritar e desfavoritar o mesmo filme offline? E se a rede cair no meio do envio? Os testes descrevem esses casos. A persistência e a idempotência da fila já vêm prontas; você completa os conflitos e o `flush`.
+> **Bônus (não pontua):** ligue a `SyncQueue` ao `favoritesProvider` (cada `toggle` enfileira uma operação; `flush` quando `onlineProvider` voltar a `true`).
+
+---
+
 ## Critérios de avaliação (15 pts)
 | # | Critério | Pts | Como é medido |
 |---|---|---|---|
 | 1 | App compila e roda (`flutter run` / `flutter analyze` limpo) | 2 | manual (eliminatório) |
-| 2 | **Ex1** · `MovieCard` compõe título + nota (⭐) + ano | 2 | `flutter test` |
-| 3 | **Ex2** · favoritar (local) reflete no card + contador + limpar | 2 | `flutter test` |
-| 4 | **Ex4** · Firestore — favoritos persistem após reload | 4 | manual + estrutural |
-| 5 | **Ex5** · Remote Config — banner busca valor remoto | 2 | estrutural |
-| 6 | **Ex3** · teste autoral do provider local passa | 2 | `flutter test` |
-| 7 | README — como rodar + **1 parágrafo**: local vs cloud (trade-off) | 1 | manual (Canvas) |
+| 2 | **Ex1** · `MovieCard` compõe título + nota (⭐) + ano | 1 | `flutter test` |
+| 3 | **Ex2** · favoritar (local) reflete no card + contador + limpar | 1 | `flutter test` |
+| 4 | **Ex3** · teste autoral do provider local passa | 1 | `flutter test` |
+| 5 | **Ex4** · Firestore — favoritos persistem após reload | 1,5 | manual + estrutural |
+| 6 | **Ex5** · Remote Config — banner busca valor remoto | 1 | estrutural |
+| 7 | **T10** · persistência offline do Firestore ligada | 0,5 | estrutural |
+| 8 | **T11** · `OfflineBanner` | 1 | `flutter test` + estrutural |
+| 9 | **T12** · `toJson` / `fromJson` | 1 | `flutter test` + estrutural |
+| 10 | **T13** · repositório cache-first | 1,5 | `flutter test` + estrutural |
+| 11 | **T14** · validade do cache (TTL) | 1 | `flutter test` + estrutural |
+| 12 | **T15** · `SyncQueue` (conflitos + flush) | 1,5 | `flutter test` + estrutural |
+| 13 | README — como rodar + **1 parágrafo**: local vs cloud vs offline-first (trade-offs) | 1 | manual (Canvas) |
 
-> O autograder posta uma **nota mínima** (parte estrutural/estática — ele **lê** o código, não executa `flutter test` de verdade nem acessa seu Firestore). Persistência real (Ex4) e comportamento do Remote Config (Ex5) são conferidos na **leitura manual** do PR + o vídeo curto pedido no README. A final sai no Canvas.
+> O autograder posta uma **nota mínima** (parte estrutural/estática — ele **lê** o código, não executa `flutter test` de verdade nem acessa seu Firestore). **Rode `flutter test` você mesmo: é o que confirma as TASKs 11–15.** Persistência real (Ex4) e comportamento do Remote Config (Ex5) são conferidos na **leitura manual** do PR + o vídeo curto pedido no README. A final sai no Canvas.
 
 ## Entrega
 - **Fork + Pull Request** no repo público; cole o link no Canvas.
 - **Hands-on da aula não pontua** — a entrega solo vale os 15 pts.
 - ✏️ **Edite os arquivos dentro de `exercicios/03-flutter-ui-estado/pratica/` (no lugar)** — **não crie subpasta** `aluno-.../`.
-- **README:** além do parágrafo local vs cloud, inclua 1 print ou GIF curto mostrando o favorito sobrevivendo ao refresh (prova do Firestore funcionando) — é o que o professor confere na correção manual do Ex4/Ex5.
+- **README:** além do parágrafo (local vs cloud vs offline-first), inclua 1 print ou GIF curto mostrando o favorito sobrevivendo ao refresh (prova do Firestore funcionando) — é o que o professor confere na correção manual do Ex4/Ex5. Se quiser, adicione também 1 print do app **offline** (banner + lista).
 - Pode commitar seu `lib/firebase_options.dart` — é config de um projeto pessoal free tier, não é segredo de produção.
 
 > **KMP entra na Aula 5** — aqui o foco é **UI + estado local + estado cloud (Firebase)**.

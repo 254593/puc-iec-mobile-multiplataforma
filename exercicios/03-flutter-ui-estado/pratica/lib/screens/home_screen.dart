@@ -11,8 +11,9 @@ import 'package:flutter/material.dart';
 // import '../state/favorites.dart';
 // TODO [TASK 8]: descomente quando o remote_config.dart estiver pronto
 // import '../services/remote_config.dart';
-import '../data/movies.dart';
-import '../widgets/movie_card.dart';
+import '../widgets/movie_list.dart';
+import '../widgets/offline_banner.dart';
+import '../widgets/offline_toggle.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -23,6 +24,7 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Filmes'),
         actions: const [
+          OfflineToggle(), // modo avião simulado (pronto)
           // ── Ex2 · TASK 6 — botão "limpar" favoritos · 🧑‍💻 EM CASA (sozinho) ──
           // adicione um IconButton(icon: Icon(Icons.delete_outline)) que chama
           //   ref.read(favoritesProvider.notifier).clear()
@@ -36,17 +38,14 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       body: Column(
+        // ignore: prefer_const_literals_to_create_immutables
         children: [
+          const OfflineBanner(), // TASK 11 — aviso de offline
           // ── Ex5 · TASK 8 — banner Remote Config · 🧑‍💻 EM CASA (sozinho) ────────────────
           // Vire esta parte um FutureBuilder<String> (ou StatefulWidget com initState)
           // que chama fetchBannerMessage() de '../services/remote_config.dart' e
           // renderiza o texto retornado num Container no topo da lista.
-          Expanded(
-            child: ListView.builder(
-              itemCount: movies.length,
-              itemBuilder: (context, i) => MovieCard(movie: movies[i]),
-            ),
-          ),
+          const Expanded(child: MovieList()), // lista vinda do repositório (cache-first)
         ],
       ),
     );

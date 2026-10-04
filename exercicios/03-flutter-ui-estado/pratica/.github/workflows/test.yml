@@ -1,10 +1,10 @@
-name: Atividade 3 — Flutter UI + Estado (Arquitetura)
+name: Atividade 3 — Flutter UI + Estado + Offline-first (Arquitetura)
 
 on:
   push:                 # qualquer branch do próprio repo
   pull_request_target:  # PRs de forks — roda sem aprovação manual
 
-# Gate da Atividade 3: `flutter test` precisa passar (Ex1 + Ex2).
+# Gate da Atividade 3: `flutter test` precisa passar (Ex1–Ex3 + TASKs 11–15 de offline-first).
 # Roda do diretório do projeto (onde está o pubspec.yaml).
 jobs:
   test:
@@ -22,5 +22,5 @@ jobs:
 
       - run: flutter pub get
       - run: flutter analyze
-      - name: Rodar testes (Ex1 + Ex2)
+      - name: Rodar testes (UI/estado + offline-first)
         run: flutter test --reporter expanded

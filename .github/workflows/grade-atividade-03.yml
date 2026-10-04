@@ -1,4 +1,4 @@
-name: Grade — Atividade 3 (Flutter UI + Estado)
+name: Grade — Atividade 3 (Flutter UI + Estado + Firebase + Offline-first)
 
 # Roda em PR de FORK a cada commit (pull_request_target → comenta sem aprovação manual).
 # ESTRUTURAL: o validator só LÊ os .dart da entrega — nunca executa código do fork.
@@ -15,7 +15,7 @@ permissions:
 env:
   EXERCISE: exercicios/03-flutter-ui-estado
   VALIDATOR: flutter-ui-estado.ts
-  ATIVIDADE: 'Atividade 3 — App Flutter: UI + Estado + Firebase'
+  ATIVIDADE: 'Atividade 3 — App Flutter: UI + Estado + Firebase + Offline-first'
 
 jobs:
   grade:
