@@ -107,7 +107,7 @@ jobs:
             if (!fs.existsSync('/tmp/grade.json')) {
               await github.rest.issues.createComment({
                 ...context.repo, issue_number: context.issue.number,
-                body: head + `❌ Não consegui avaliar. Confira se o projeto Flutter (com \`pubspec.yaml\`) está dentro de \`${process.env.EXERCISE}/\`.`,
+                body: head + `❌ Não consegui avaliar. Confira se o projeto Flutter (com \`pubspec.yaml\`) está dentro de \`${process.env.EXERCISE}/\`. Se a estrutura estiver certa, **pode ser uma falha do avaliador (não sua)** — avise o professor no Teams.`,
               });
               return;
             }
