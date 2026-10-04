@@ -6,7 +6,7 @@ App de catálogo de filmes em **Flutter**. Já roda; você completa os scaffolds
 ```bash
 cd exercicios/03-flutter-ui-estado/pratica   # confirme: ls lib
 flutter pub get
-flutter run -d chrome   # abre no navegador — sem emulador, sem rede/token
+flutter run -d chrome --web-port 5300   # PORTA FIXA (o cache offline fica no navegador, por porta)
 ```
 
 ## Testar (é o seu checklist)

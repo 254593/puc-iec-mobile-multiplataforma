@@ -11,7 +11,7 @@ Catálogo de filmes em **Flutter**: você compõe a UI (`MovieCard`), gerencia *
 cd exercicios/03-flutter-ui-estado/pratica
 ls lib                              # prova de que você está no lugar certo (dir lib no Windows)
 flutter pub get
-flutter run -d chrome               # app abre (lista de filmes) — sem emulador
+flutter run -d chrome --web-port 5300  # app abre — PORTA FIXA: o cache offline vive por porta
 flutter test                        # começa VERMELHO — deixe tudo verde
 flutter test test/offline_test.dart # só as TASKs de offline-first (11–15)
 ```

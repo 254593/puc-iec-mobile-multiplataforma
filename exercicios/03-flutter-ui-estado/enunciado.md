@@ -27,7 +27,7 @@ Fazemos **juntos em aula**: **TASK 1** (compor o card), **TASK 2** (provider loc
 flutter doctor                          # https://docs.flutter.dev/get-started/install
 cd exercicios/03-flutter-ui-estado/pratica
 flutter pub get
-flutter run -d chrome                   # o app já abre (lista de filmes), sem emulador
+flutter run -d chrome --web-port 5300   # o app já abre (lista de filmes), sem emulador — PORTA FIXA (veja Ex6)
 flutter test                            # começa VERMELHO — deixe verde (checklist_test.dart confirma que terminou tudo)
 ```
 
@@ -143,7 +143,9 @@ Uma fonte só (`favoritesProvider`) refletindo no **card**, no **contador** e no
 | 🧑‍💻 **15** | `data/sync_queue.dart` | 🔴 **difícil** | `SyncQueue`: **regras de conflito** no `enqueue` (mesma ação não duplica; ação oposta **cancela**) e `flush` **na ordem**, **persistindo a cada sucesso** e **parando no 1º erro** |
 
 ✅ **Como conferir:** `flutter test test/offline_test.dart` — cada grupo de testes é uma TASK (começa tudo vermelho).
-✅ **Como ver funcionando:** `flutter run -d chrome` → clique no ✈️ → o banner aparece e a lista continua (vinda do cache). No navegador, **DevTools → Network → Offline** também vale.
+✅ **Como ver funcionando:** `flutter run -d chrome --web-port 5300` → clique no ✈️ → o banner aparece e a lista continua (vinda do cache). No navegador, **DevTools → Network → Offline** também vale.
+
+> ⚠️ **Fixe a porta (`--web-port 5300`).** O cache e a fila ficam no **armazenamento do navegador, que é por endereço + porta**. Sem `--web-port`, o Flutter sorteia uma porta nova a cada execução → o navegador começa **vazio** e o app, offline, só mostra *"Ainda não há dados salvos aqui"* (o comportamento certo para quem não tem nada salvo). Abra **uma vez online** (a lista é salva) e só então teste offline.
 
 > **Por que a TASK 15 é difícil:** não é código longo — é **raciocínio**: o que acontece se você favoritar e desfavoritar o mesmo filme offline? E se a rede cair no meio do envio? Os testes descrevem esses casos. A persistência e a idempotência da fila já vêm prontas; você completa os conflitos e o `flush`.
 > **Bônus (não pontua):** ligue a `SyncQueue` ao `favoritesProvider` (cada `toggle` enfileira uma operação; `flush` quando `onlineProvider` voltar a `true`).
