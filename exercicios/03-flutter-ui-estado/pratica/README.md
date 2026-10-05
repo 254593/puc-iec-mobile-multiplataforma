@@ -8,6 +8,7 @@ cd exercicios/03-flutter-ui-estado/pratica   # confirme: ls lib
 flutter pub get
 flutter run -d chrome --web-port 5300   # PORTA FIXA (o cache offline fica no navegador, por porta)
 # 💡 Atalho no VS Code: aperte F5 (o .vscode/launch.json já fixa a porta 5300)
+#    ou Ctrl/Cmd+Shift+B (terminal integrado: r = hot reload) · ./rodar.sh (Mac/Linux) · rodar.bat (Windows)
 ```
 
 ## Testar (é o seu checklist)

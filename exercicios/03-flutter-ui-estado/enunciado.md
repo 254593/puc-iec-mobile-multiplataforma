@@ -29,6 +29,7 @@ cd exercicios/03-flutter-ui-estado/pratica
 flutter pub get
 flutter run -d chrome --web-port 5300   # o app já abre (lista de filmes), sem emulador — PORTA FIXA (veja Ex6)
 # 💡 Atalho no VS Code: abra a pasta pratica/ e aperte F5 (já vem com a porta 5300 configurada)
+#    ou Ctrl/Cmd+Shift+B (roda no terminal: r = hot reload) · ou ./rodar.sh (Mac/Linux) · rodar.bat (Windows)
 flutter test                            # começa VERMELHO — deixe verde (checklist_test.dart confirma que terminou tudo)
 ```
 
