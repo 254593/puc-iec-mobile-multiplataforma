@@ -33,6 +33,14 @@ flutter run -d chrome --web-port 5300   # o app já abre (lista de filmes), sem 
 flutter test                            # começa VERMELHO — deixe verde (checklist_test.dart confirma que terminou tudo)
 ```
 
+### Dados reais do TMDB (opcional — deixa o app igual ao de produção)
+Por padrão o app usa uma **lista simulada de 5 filmes** (sem rede, sem token — é ela que o `flutter test` usa). Se quiser **filmes de verdade** (pôsteres, notas e gêneros atuais, ~40 filmes):
+1. Crie uma conta grátis no [TMDB](https://www.themoviedb.org/signup) → [Settings → API](https://www.themoviedb.org/settings/api) → copie a **API Key (v3)** (32 caracteres).
+2. Em `exercicios/03-flutter-ui-estado/pratica/`, copie `.env.local.example` para **`.env.local`** e cole a chave (`TMDB_KEY=...`). O arquivo **não vai pro git**.
+3. Rode com **`./rodar.sh`** (ou `rodar.bat`) — ele detecta o `.env.local` sozinho. No VS Code: F5 → escolha **"dados reais TMDB"**.
+
+> Repare: **nenhuma tela mudou**. Só trocamos a fonte de dados — a UI não sabe de onde vêm os filmes (é a arquitetura em camadas). **Sem chave tudo continua funcionando** (lista simulada) e os testes não dependem dela.
+
 ### Setup Firebase (TASK 3, feito junto em aula)
 Cada aluno precisa do **próprio projeto Firebase** (gratuito, plano Spark — não precisa cartão):
 ```bash

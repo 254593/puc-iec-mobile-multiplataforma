@@ -5,9 +5,28 @@
       "label": "Rodar app (Chrome, porta 5300)",
       "type": "shell",
       "command": "flutter run -d chrome --web-port 5300",
-      "group": { "kind": "build", "isDefault": true },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
       "isBackground": true,
-      "presentation": { "reveal": "always", "panel": "dedicated", "focus": true },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Rodar app com dados reais TMDB (precisa do .env.local)",
+      "type": "shell",
+      "command": "flutter run -d chrome --web-port 5300 --dart-define-from-file=.env.local",
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": true
+      },
       "problemMatcher": []
     }
   ]

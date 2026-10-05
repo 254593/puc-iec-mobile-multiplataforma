@@ -48,3 +48,9 @@ Fork + PR no repo público; link no Canvas. O **J.A.R.V.I.S.** lê o seu código
 > **Versões:** precisa de Flutter **3.27+** (o `pubspec` já avisa se for mais antigo).
 
 > **Não comite** `.dart_tool/`, `build/`, `pubspec.lock` (já no `.gitignore`).
+
+## Dados reais do TMDB (opcional)
+
+Sem chave, o app usa a lista simulada (5 filmes). Para filmes reais: copie `.env.local.example` → `.env.local`,
+cole sua chave do TMDB (`TMDB_KEY=...`) e rode `./rodar.sh` / `rodar.bat` (ou F5 → "dados reais TMDB").
+O `.env.local` não vai pro git. Os testes (`flutter test`) nunca usam a chave.

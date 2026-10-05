@@ -6,4 +6,10 @@ if not exist lib (
   echo Nao achei a pasta lib\ - rode este arquivo de dentro de exercicios\03-flutter-ui-estado\pratica
   exit /b 1
 )
-flutter run -d chrome --web-port 5300
+if exist .env.local (
+  echo - dados reais do TMDB (.env.local encontrado)
+  flutter run -d chrome --web-port 5300 --dart-define-from-file=.env.local
+) else (
+  echo - lista simulada (para dados reais, crie o .env.local - veja .env.local.example)
+  flutter run -d chrome --web-port 5300
+)

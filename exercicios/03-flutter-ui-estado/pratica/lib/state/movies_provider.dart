@@ -6,14 +6,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/key_value_store.dart';
 import '../data/movie_repository.dart';
 import '../data/remote_movie_source.dart';
+import '../data/tmdb_source.dart';
 import '../models/movie.dart';
 import 'network.dart';
 
 /// No app real o main.dart troca por SharedPrefsStore (sobrevive ao F5). Nos testes: em memória.
 final storeProvider = Provider<KeyValueStore>((ref) => InMemoryStore());
 
+/// Com TMDB_KEY (--dart-define) usa o TMDB real; sem chave (ex.: flutter test) usa a lista simulada.
 final movieSourceProvider = Provider<MovieSource>(
-  (ref) => SimulatedRemote(isOnline: () => ref.read(onlineProvider)),
+  (ref) => kTmdbKey.isNotEmpty
+      ? TmdbSource(key: kTmdbKey, isOnline: () => ref.read(onlineProvider))
+      : SimulatedRemote(isOnline: () => ref.read(onlineProvider)),
 );
 
 final movieRepositoryProvider = Provider<MovieRepository>(

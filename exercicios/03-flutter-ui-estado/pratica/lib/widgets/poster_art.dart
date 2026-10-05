@@ -23,7 +23,10 @@ class PosterArt extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = _palettes[movie.id % _palettes.length];
-    final url = posterUrlFor(movie.id);
+    // dados reais trazem o caminho do pôster; a lista simulada usa o mapa de posters.dart
+    final url = movie.posterPath != null
+        ? 'https://image.tmdb.org/t/p/w342${movie.posterPath}'
+        : posterUrlFor(movie.id);
     return Container(
       width: width,
       height: height,
