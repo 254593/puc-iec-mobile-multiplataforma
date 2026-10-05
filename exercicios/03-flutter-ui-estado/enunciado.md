@@ -34,15 +34,19 @@ flutter test                            # começa VERMELHO — deixe verde (chec
 ### Setup Firebase (TASK 3, feito junto em aula)
 Cada aluno precisa do **próprio projeto Firebase** (gratuito, plano Spark — não precisa cartão):
 ```bash
-dart pub global activate flutterfire_cli
-npm install -g firebase-tools           # se ainda não tiver
+# 1) precisa só do Node.js (não depende do Flutter)
+npm install -g firebase-tools
 firebase login                          # abre o browser, loga com sua conta Google
 
+# 2) com o Flutter instalado (o `dart` já vem dentro dele)
+dart pub global activate flutterfire_cli
+cd exercicios/03-flutter-ui-estado/pratica
 flutterfire configure                   # escolhe "Create a new project" (ou usa um seu já existente)
                                          # marca só a plataforma "web"
                                          # gera lib/firebase_options.dart — NÃO commita esse arquivo com valores reais de produção,
                                          # mas pro nosso caso (projeto pessoal, free tier) pode ir no PR sem problema
 ```
+> Sem Node.js, sem permissão de administrador, ou `flutterfire: command not found` (o `~/.pub-cache/bin` precisa estar no PATH)? Use o **Plano B abaixo** — faz tudo pelo site do Firebase, sem instalar nada.
 No [console do Firebase](https://console.firebase.google.com/) do seu projeto:
 1. **Build → Firestore Database** → "Criar banco de dados" → *Location*: pode manter a sugestão → modo **teste** (regras abertas por 30 dias). Se aparecer *backup* ou plano Blaze, **ignore** (exige plano pago).
 2. **Build → Remote Config** → "Criar configuração" → adiciona um parâmetro chamado `banner_message` (string, valor padrão: `"Bem-vindo ao app de filmes!"`) → **Publicar alterações** (sem publicar, o app não recebe o valor)
