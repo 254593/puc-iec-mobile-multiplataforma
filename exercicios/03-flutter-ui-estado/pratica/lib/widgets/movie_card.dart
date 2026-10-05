@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import '../state/favorites.dart';
 import '../models/movie.dart';
+// TASK 1 — descomente para usar o pôster pronto:
+// import 'poster_art.dart';
 
 class MovieCard extends StatelessWidget {
   final Movie movie;
@@ -17,13 +19,18 @@ class MovieCard extends StatelessWidget {
   Widget build(BuildContext context) {
     // ── Ex1 · TASK 1 — componha o MovieCard · 🧑‍🏫 EM AULA (juntos) ─────────────────────────────
     // Hoje só aparece o título. Deixe assim:
-    //   Card → Padding(16) → Column(
-    //     crossAxisAlignment: CrossAxisAlignment.start,
-    //     mainAxisSize: MainAxisSize.min,
+    //   Card → Padding(14) → Row(
     //     children: [
-    //       Text(movie.title, fontSize 20, bold),
-    //       Row([ Icon(Icons.star, color: Colors.amber, size: 18), Text(' ${movie.rating}') ]),
-    //       Text(movie.year, color: Colors.grey),
+    //       PosterArt(movie: movie),            // pôster pronto (descomente o import acima)
+    //       SizedBox(width: 14),
+    //       Expanded(child: Column(
+    //         crossAxisAlignment: CrossAxisAlignment.start,
+    //         mainAxisSize: MainAxisSize.min,
+    //         children: [
+    //           Text(movie.title, fontSize 20, bold),
+    //           Row([ Icon(Icons.star, color: Colors.amber, size: 18), Text(' ${movie.rating}') ]),
+    //           Text(movie.year, color: Colors.grey),
+    //         ])),
     //     ])
     //
     // ── Ex2 · TASK 4 — coração de favorito · 🧑‍💻 EM CASA (sozinho) ──────────────────────────────

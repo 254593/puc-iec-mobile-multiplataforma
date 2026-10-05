@@ -90,7 +90,7 @@ service cloud.firestore {
 
 ## Exercício 1 — UI: componha o `MovieCard`
 🧑‍🏫 **TASK 1** (`lib/widgets/movie_card.dart`): hoje o card mostra **só o título**. Componha:
-- `Card` → `Padding(16)` → `Column` (`crossAxisAlignment: .start`, `mainAxisSize: .min`): **título** (20, negrito) · **nota** (`Row` com `Icon(Icons.star, color: Colors.amber)` + `Text(' ${movie.rating}')`) · **ano** (`movie.year`, cinza).
+- Descomente `import 'poster_art.dart';` (o pôster já vem pronto) e monte: `Card` → `Padding(14)` → `Row`: `PosterArt(movie: movie)` · `SizedBox(width: 14)` · `Expanded(Column(`…`))` (`crossAxisAlignment: .start`, `mainAxisSize: .min`) com **título** (20, negrito) · **nota** (`Row` com `Icon(Icons.star, color: Colors.amber)` + `Text(' ${movie.rating}')`) · **ano** (`movie.year`, cinza).
 
 ✅ **Verde:** teste *"Ex1 — MovieCard mostra título, nota (⭐) e ano"*.
 

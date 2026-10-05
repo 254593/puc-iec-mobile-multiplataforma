@@ -5,21 +5,29 @@
 > 🧑‍🏫 **EM AULA (juntos):** TASK 1, 2, 3 (Firebase) e 10 (persistência offline). 🧑‍💻 **EM CASA (sozinho):** TASK 4–9 e 11–15. A numeração é a **mesma do enunciado**.
 
 ## Ex1 · TASK 1 — componha o `MovieCard`
-`lib/widgets/movie_card.dart`. Troque o stub (só título) por:
+`lib/widgets/movie_card.dart`. Primeiro **descomente** `import 'poster_art.dart';` (o pôster já vem pronto). Troque o stub (só título) por:
 ```dart
 return Card(
   child: Padding(
-    padding: const EdgeInsets.all(16),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
+    padding: const EdgeInsets.all(14),
+    child: Row(
       children: [
-        Text(movie.title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-        Row(children: [
-          const Icon(Icons.star, color: Colors.amber, size: 18),
-          Text(' ${movie.rating}'),
-        ]),
-        Text(movie.year, style: const TextStyle(color: Colors.grey)),
+        PosterArt(movie: movie),
+        const SizedBox(width: 14),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(movie.title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              Row(children: [
+                const Icon(Icons.star, color: Colors.amber, size: 18),
+                Text(' ${movie.rating}'),
+              ]),
+              Text(movie.year, style: const TextStyle(color: Colors.grey)),
+            ],
+          ),
+        ),
       ],
     ),
   ),
