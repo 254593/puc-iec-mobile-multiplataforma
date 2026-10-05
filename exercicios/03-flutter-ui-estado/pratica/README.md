@@ -7,6 +7,7 @@ App de catálogo de filmes em **Flutter**. Já roda; você completa os scaffolds
 cd exercicios/03-flutter-ui-estado/pratica   # confirme: ls lib
 flutter pub get
 flutter run -d chrome --web-port 5300   # PORTA FIXA (o cache offline fica no navegador, por porta)
+# 💡 Atalho no VS Code: aperte F5 (o .vscode/launch.json já fixa a porta 5300)
 ```
 
 ## Testar (é o seu checklist)
