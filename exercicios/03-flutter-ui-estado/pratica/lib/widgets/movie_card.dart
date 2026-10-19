@@ -8,8 +8,7 @@ import 'package:flutter/material.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import '../state/favorites.dart';
 import '../models/movie.dart';
-// TASK 1 — descomente para usar o pôster pronto:
-// import 'poster_art.dart';
+import 'poster_art.dart';
 
 class MovieCard extends StatelessWidget {
   final Movie movie;
@@ -17,21 +16,7 @@ class MovieCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ── Ex1 · TASK 1 — componha o MovieCard · 🧑‍🏫 EM AULA (juntos) ─────────────────────────────
-    // Hoje só aparece o título. Deixe assim:
-    //   Card → Padding(14) → Row(
-    //     children: [
-    //       PosterArt(movie: movie),            // pôster pronto (descomente o import acima)
-    //       SizedBox(width: 14),
-    //       Expanded(child: Column(
-    //         crossAxisAlignment: CrossAxisAlignment.start,
-    //         mainAxisSize: MainAxisSize.min,
-    //         children: [
-    //           Text(movie.title, fontSize 20, bold),
-    //           Row([ Icon(Icons.star, color: Colors.amber, size: 18), Text(' ${movie.rating}') ]),
-    //           Text(movie.year, color: Colors.grey),
-    //         ])),
-    //     ])
+    // ── Ex1 · TASK 1 — Card → Padding(14) → Row(pôster · espaço · Column(título, nota, ano))
     //
     // ── Ex2 · TASK 4 — coração de favorito · 🧑‍💻 EM CASA (sozinho) ──────────────────────────────
     // Vire `ConsumerWidget` (build(context, ref)) e:
@@ -40,8 +25,32 @@ class MovieCard extends StatelessWidget {
     //   ref.read(favoritesProvider.notifier).toggle(movie.id)
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Text(movie.title),
+        padding: const EdgeInsets.all(14),
+        child: Row(
+          children: [
+            PosterArt(movie: movie),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    movie.title,
+                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  Row(
+                    children: [
+                      const Icon(Icons.star, color: Colors.amber, size: 18),
+                      Text(' ${movie.rating}'),
+                    ],
+                  ),
+                  Text(movie.year, style: const TextStyle(color: Colors.grey)),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
