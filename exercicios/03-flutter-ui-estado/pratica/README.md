@@ -74,10 +74,12 @@ operações). Em troca de mais complexidade (cache, serialização, fila, idempo
 internet e parece instantâneo mesmo com rede lenta.
 
 ## Evidências
-**Favorito sobrevivendo ao refresh (Firestore):**
+**Favorito sobrevivendo ao refresh (Firestore):** limpa (♥ 0) → favorita 3 filmes (♥ 3) → recarrega a página →
+os mesmos 3 continuam marcados. A gravação foi feita num perfil de navegador **zerado**, sem nada salvo
+localmente — os favoritos só podem ter vindo do documento `favorites/meus-favoritos` no Firestore.
 
-> 📌 _GIF a adicionar: `docs/favorito-f5.gif`_
+![Favoritos sobrevivendo ao F5](docs/favorito-f5.gif)
 
-**Modo offline (banner + lista vinda do cache):**
+**Modo offline (✈️ ligado):** banner no topo e a lista continua na tela, vinda do cache local.
 
-> 📌 _Print a adicionar: `docs/offline.png`_
+![App offline com banner e lista do cache](docs/offline.png)
