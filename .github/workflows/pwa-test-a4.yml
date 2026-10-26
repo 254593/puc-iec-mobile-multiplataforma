@@ -1,0 +1,33 @@
+name: PWA test — Atividade 4 (roda no SEU fork)
+
+# CI do ALUNO: a cada push no fork roda os testes unitários e o build da Atividade 4 (o build é
+# critério eliminatório). SEM `pull_request_target` e SEM segredos: roda o próprio código no próprio
+# repositório. O workflow `pratica/.github/workflows/test.yml` não dispara porque o GitHub só lê
+# workflows em `.github/` na raiz do repo. O E2E fica de fora (precisa do secret do TMDB).
+on:
+  push:
+    paths:
+      - 'exercicios/04-pwa-tmdb/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    if: github.repository_owner != 'jacksonsmith'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: exercicios/04-pwa-tmdb/pratica
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: exercicios/04-pwa-tmdb/pratica/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
