@@ -71,7 +71,7 @@ export function HomeScreen({ activeTab, isFavorite, toggleFavorite }: Props) {
         {!isOnline && (
           <div
             role="status"
-            style={{ background: '#C2410C', color: '#fff', padding: '8px 16px', textAlign: 'center', fontSize: 14 }}
+            style={{ background: '#C2410C', color: '#fff', padding: '8px 16px', textAlign: 'center', fontSize: 14, borderRadius: 10, marginBottom: 16 }}
           >
             📡 Offline — exibindo dados do cache
           </div>
