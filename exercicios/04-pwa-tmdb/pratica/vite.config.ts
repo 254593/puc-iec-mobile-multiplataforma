@@ -33,24 +33,31 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
-        // TODO 2 — runtimeCaching: é AQUI que mora o PWA offline do app.
-        //
-        // Escreva DUAS regras (cada uma é um objeto { urlPattern, handler, options }):
-        //
-        //  (a) API de filmes  → https://api.themoviedb.org/...
-        //      - estratégia que tenta a REDE primeiro e cai pro cache se falhar
-        //      - desiste da rede após 3 segundos (networkTimeoutSeconds)
-        //      - cacheName 'tmdb-api' · expiration: no máx. 50 entradas, 1 dia
-        //
-        //  (b) Pôsteres → qual é o HOST das imagens? Abra o app, DevTools → Network → Img
-        //      e olhe a URL de um pôster (NÃO é o mesmo host da API!)
-        //      - estratégia que serve do CACHE primeiro (imagem não muda)
-        //      - cacheName 'tmdb-images' · expiration: no máx. 200 entradas, 7 dias
-        //      - pôsteres vêm de outra origem SEM CORS → a resposta é "opaca" (status 0):
-        //        só entra no cache se você liberar o status 0 em cacheableResponse
-        //
-        // Referências: slides "Cache strategies" e "vite-plugin-pwa" · web.dev/learn/pwa (módulo Caching)
-        runtimeCaching: [],
+        // TODO 2 — runtimeCaching: cada regra casa pela URL da requisição.
+        runtimeCaching: [
+          {
+            // (a) API: dado muda (lista de populares) → rede primeiro; sem resposta em 3 s
+            // (ou offline) serve a última resposta guardada
+            urlPattern: /^https:\/\/api\.themoviedb\.org\/.*/i,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'tmdb-api',
+              networkTimeoutSeconds: 3,
+              expiration: { maxEntries: 50, maxAgeSeconds: 60 * 60 * 24 }, // 1 dia
+            },
+          },
+          {
+            // (b) Pôsteres: vêm de OUTRO host (image.tmdb.org) e não mudam → cache primeiro.
+            // <img> cross-origin sem CORS = resposta opaca (status 0): precisa ser liberada
+            urlPattern: /^https:\/\/image\.tmdb\.org\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'tmdb-images',
+              expiration: { maxEntries: 200, maxAgeSeconds: 60 * 60 * 24 * 7 }, // 7 dias
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+        ],
       },
     }),
   ],
