@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.example.project.data.Movie
 import org.example.project.data.TmdbApi
+import kotlin.math.roundToInt
 
 // ─────────────────────────────────────────────────────────────────────────────
 // App — Composable raiz compartilhado entre Android, iOS e Web.
@@ -46,15 +47,15 @@ fun App(tmdbToken: String = "") {
         }
 
         Surface(modifier = Modifier.fillMaxSize()) {
-            // ── TODO 1 ──────────────────────────────────────────────────────
-            // Troque a linha abaixo por um `when` que mostra, nesta ordem:
-            //   - tmdbToken em branco       -> TokenMissingMessage()
-            //   - isLoading == true         -> CircularProgressIndicator() centralizado
-            //   - error != null             -> ErrorMessage(error!!)
-            //   - caso contrário            -> MovieList(movies)
-            // ────────────────────────────────────────────────────────────────
-            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text("TODO 1: implemente os estados (loading / erro / lista)")
+            // ── TODO 1 — a UI é função do estado: cada combinação vira UMA tela.
+            // A ordem importa: sem token nem dispara a busca; o loading vem antes do erro.
+            when {
+                tmdbToken.isBlank() -> TokenMissingMessage()
+                isLoading -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
+                }
+                error != null -> ErrorMessage(error!!)
+                else -> MovieList(movies)
             }
         }
     }
@@ -69,32 +70,68 @@ private fun MovieList(movies: List<Movie>) {
         return
     }
 
-    // ── TODO 2 ──────────────────────────────────────────────────────────────
-    // Monte um LazyColumn (fillMaxSize, contentPadding 16dp,
-    // verticalArrangement spacedBy 12dp) com:
-    //   - um item de cabeçalho: Text("${movies.size} filmes populares")
-    //   - um items(movies) { movie -> MovieCard(movie) }
-    // ────────────────────────────────────────────────────────────────────────
-    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text("TODO 2: monte o LazyColumn com cabeçalho + itens")
+    // ── TODO 2 — LazyColumn só compõe os itens visíveis (equivale ao ListView.builder do Flutter)
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        item {
+            Text(
+                "${movies.size} filmes populares",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+            )
+        }
+        items(movies, key = { it.id }) { movie -> MovieCard(movie) }
     }
 }
 
 @Composable
 private fun MovieCard(movie: Movie) {
-    // ── TODO 3 ──────────────────────────────────────────────────────────────
-    // Construa o card do filme. Sugestão de layout (Card > Row):
-    //   - Box à esquerda (56x84dp, cantos arredondados 6dp, background
-    //     MaterialTheme.colorScheme.primaryContainer) com a inicial do
-    //     título centralizada (placeholder de poster, sem imagem real)
-    //   - Column à direita (weight 1f) com: título (bold, 2 linhas max),
-    //     overview (2 linhas max), e uma Row com nota "⭐ X.X" + ano
-    // ────────────────────────────────────────────────────────────────────────
+    // ── TODO 3 — Card > Row(placeholder do pôster · Column(título, overview, nota/ano))
+    val rating = (movie.voteAverage * 10).roundToInt() / 10.0 // 1 casa decimal sem String.format (commonMain)
+    val year = movie.releaseDate.take(4)
     Card(modifier = Modifier.fillMaxWidth()) {
-        Text(
-            text = "TODO 3: card de ${movie.title}",
-            modifier = Modifier.padding(16.dp),
-        )
+        Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+            Box(
+                modifier = Modifier
+                    .size(width = 56.dp, height = 84.dp)
+                    .clip(RoundedCornerShape(6.dp))
+                    .background(MaterialTheme.colorScheme.primaryContainer),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    movie.title.take(1).uppercase(),
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                )
+            }
+            Spacer(Modifier.width(12.dp))
+            Column(Modifier.weight(1f)) {
+                Text(
+                    movie.title,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Spacer(Modifier.height(4.dp))
+                Text(
+                    movie.overview,
+                    style = MaterialTheme.typography.bodySmall,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Spacer(Modifier.height(6.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Text("⭐ $rating", style = MaterialTheme.typography.labelLarge)
+                    if (year.isNotEmpty()) {
+                        Text(year, style = MaterialTheme.typography.labelLarge)
+                    }
+                }
+            }
+        }
     }
 }
 
